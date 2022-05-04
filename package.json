@@ -10,8 +10,7 @@
     "compile": "babel ./src --out-dir dist",
     "clean": "rm -r dist",
     "build": "npm run clean; npm run compile",
-    "post": "sh -c src/bin/post.sh",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "bash -c src/bin/test.sh"
   },
   "repository": {
     "type": "git",
