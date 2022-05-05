@@ -35,8 +35,11 @@ class FlatfileDatabaseAdaptor {
         );
     }
 
-    search(search) {
-        return this.acronyms.filter((acronymObj) => acronymObj.acronym == search);
+    search(search, page, limit) {
+        if (!page) page = 1;
+        if (!limit) limit = 10;
+        const acronyms = this.acronyms.filter((acronymObj) => acronymObj.acronym == search);
+        return acronyms.slice((limit * page) - limit, limit * page);
     }
 
     _getIndex(acronymID) {

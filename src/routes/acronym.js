@@ -29,7 +29,7 @@ export const acronymRouter = (appRouter, db, url='/acronym') => {
             abort(res, "Missing search term");
             return
         }
-        const acronymResults = db.search(req.query.search);
+        const acronymResults = db.search(req.query.search, req.query.page, req.query.limit);
         res.send(acronymResults);
     }
     

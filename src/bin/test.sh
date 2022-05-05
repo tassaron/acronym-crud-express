@@ -63,6 +63,16 @@ main () {
     echo "GET 127.0.0.1:3000/acronym?search=LOL"
     GET "127.0.0.1:3000/acronym?search=LOL"
     newline
+    POST200; POST200; POST200
+    echo "GET 127.0.0.1:3000/acronym?search=LOL&page=2&limit=2"
+    GET "127.0.0.1:3000/acronym?search=LOL&page=2&limit=2"
+    newline
+    echo "GET 127.0.0.1:3000/acronym?search=LOL&page=1&limit=2"
+    GET "127.0.0.1:3000/acronym?search=LOL&page=1&limit=2"
+    newline
+    echo "GET 127.0.0.1:3000/acronym?search=LOL&limit=1"
+    GET "127.0.0.1:3000/acronym?search=LOL&limit=1"
+    newline
 }
 
 
