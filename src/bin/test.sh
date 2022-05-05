@@ -6,9 +6,9 @@ GET () {
 
 
 POST200 () {
-    curl --header "Content-Type: application/json" \
+    curl --header "Content-Type: application/json" -s \
     --request POST \
-    --data '{ "acronym": "LOL", "definition": "lots of love" }' \
+    --data "$1" \
     127.0.0.1:3000/acronym | jq -r .id
 }
 
@@ -45,8 +45,7 @@ main () {
     POST400
     newline
     echo "POST 127.0.0.1:3000/acronym [Add LOL acronym (200)]"
-    uuid=$(POST200)
-    echo $uuid
+    uuid=$(POST200 '{ "acronym": "LOL", "definition": "lots of love" }')
     newline
     echo "GET 127.0.0.1:3000/acronym?search=LOL"
     GET "127.0.0.1:3000/acronym?search=LOL"
@@ -63,15 +62,28 @@ main () {
     echo "GET 127.0.0.1:3000/acronym?search=LOL"
     GET "127.0.0.1:3000/acronym?search=LOL"
     newline
-    POST200; POST200; POST200
-    echo "GET 127.0.0.1:3000/acronym?search=LOL&page=2&limit=2"
-    GET "127.0.0.1:3000/acronym?search=LOL&page=2&limit=2"
+    echo "Adding 3 more acronyms..."
+    POST200 '{ "acronym": "2B", "definition": "to be" }' > /dev/null
+    POST200 '{ "acronym": "2EZ", "definition": "too easy" }' > /dev/null
+    POST200 '{ "acronym": "2G2BT", "definition": "too good to be true" }' > /dev/null
     newline
-    echo "GET 127.0.0.1:3000/acronym?search=LOL&page=1&limit=2"
-    GET "127.0.0.1:3000/acronym?search=LOL&page=1&limit=2"
+    echo "GET 127.0.0.1:3000/acronym?search=2B&page=2&limit=2 [return 1 result]"
+    GET "127.0.0.1:3000/acronym?search=2&page=2&limit=2"
     newline
-    echo "GET 127.0.0.1:3000/acronym?search=LOL&limit=1"
-    GET "127.0.0.1:3000/acronym?search=LOL&limit=1"
+    echo "GET 127.0.0.1:3000/acronym?search=2&page=1&limit=2 [return 2 results]"
+    GET "127.0.0.1:3000/acronym?search=2&page=1&limit=2"
+    newline
+    echo "GET 127.0.0.1:3000/acronym?search=2&limit=1 [return 1 result]"
+    GET "127.0.0.1:3000/acronym?search=2&limit=1"
+    newline
+    echo "GET 127.0.0.1:3000/acronym?search=2&limit=1 [return 1 result]"
+    GET "127.0.0.1:3000/acronym?search=2&limit=1"
+    newline
+    echo "GET 127.0.0.1:3000/acronym?search=2B [return 2 results]"
+    GET "127.0.0.1:3000/acronym?search=2B"
+    newline
+    echo "GET 127.0.0.1:3000/acronym?search=2 [return 3 results]"
+    GET "127.0.0.1:3000/acronym?search=2"
     newline
 }
 

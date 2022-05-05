@@ -24,16 +24,21 @@ const validateInput = (req, res) => {
 
 /** Handles all routes related to Acronym resource */
 export const acronymRouter = (appRouter, db, url='/acronym') => {
+    
     const get = (req, res) => {
         if (!req.query.search) {
             abort(res, "Missing search term");
             return
         }
-        const acronymResults = db.search(req.query.search, req.query.page, req.query.limit);
-        res.send(acronymResults);
+        const acronymResults = db.search(req.query.search);
+        const [totalPages, currentPage] = db.paginate(acronymResults, req.query.page, req.query.limit);
+        res.setHeader('Pagination-Count', totalPages)
+            .setHeader('Pagination-Page', req.params.page ? req.params.page : 1)
+            .setHeader('Pagination-Limit', req.params.limit ? req.params.limit : 1)
+            .send(currentPage);
     }
-    
-    
+
+
     const post = (req, res) => {
         if (!validateInput(req, res)) return;
         const acronymID = db.put({
@@ -42,8 +47,8 @@ export const acronymRouter = (appRouter, db, url='/acronym') => {
         });
         res.status(200).send({ "id": acronymID });
     }
-    
-    
+
+
     const patch = (req, res) => {
         if (!validateInput(req, res)) return;
         const success = db.patch(req.params.acronymID, {
