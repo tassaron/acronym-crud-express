@@ -5,13 +5,22 @@ Uses ES6 modules and a flatfile "database" made of JSON files (with adaptor laye
 
 # Dependencies
 * Unix system
+* Node
+* npm
+* ExpressJS
+
+## Dev dependencies
 * Babel
-* Bash, curl, jq for testing in development
+* **To run tests:**
+  * Bash
+  * curl
+  * jq
 
 ## Development
-* `npm run dev` to clean, compile, and run a dev server one time
+* `npm test` to build & start server, then run a few simple tests with curl
+* `npm run dev` to clean, build, and run the server one time
 * `npm run watch` to develop while watching source code for changes
-* `npm test` to run a few simple tests with curl
 
 ## Production
-* `npm start` to start the production server (**note:** this is alpha software)
+* `npm start` to start the server in production mode
+* This is alpha/example software, not really for production
