@@ -2,7 +2,7 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import db from './flatfileDB';
-import { acronymRoutes } from './routes/routes';
+import routes from './routes/routes';
 
 // Create app
 const app = express()
@@ -13,7 +13,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 // Add routes to app
 const router = express.Router();
-acronymRoutes(router, db);
+routes(router, db);
 app.use(router);
 
 export default app;
