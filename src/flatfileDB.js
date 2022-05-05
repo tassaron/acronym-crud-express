@@ -3,8 +3,8 @@ import { writeFile } from 'fs/promises';
 import { randomUUID } from 'crypto';
 
 
+/** Abstracts the flatfile-based database so it can be replaced with a real database later */
 class FlatfileDatabaseAdaptor {
-    /* Abstracts the flatfile-based database so it can be replaced with a real database later */
     constructor(dbDir, resourceName) {
         // The "database" is a directory of JSON files
         this._dbDir = dbDir;
@@ -89,6 +89,9 @@ class FlatfileDatabaseAdaptor {
     }
 }
 
+
+/** Create flatfile DB for given resourceName */
 const db = (resourceName) => new FlatfileDatabaseAdaptor(`${process.env.MODE}DB`, resourceName);
+
 
 export default db;
