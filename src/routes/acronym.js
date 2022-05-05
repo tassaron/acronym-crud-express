@@ -23,14 +23,16 @@ const validateInput = (req, res) => {
 
 
 /** Handles all routes related to Acronym resource */
-export const acronymRouter = (appRouter, db, url='/acronym') => {
-    
+export const acronymRouter = (appRouter, createDB, url='/acronym') => {
+
+    const db = createDB("acronym");
+
     const get = (req, res) => {
         if (!req.query.search) {
             abort(res, "Missing search term");
             return
         }
-        const acronymResults = db.search(req.query.search);
+        const acronymResults = db.search(req.query.search, "acronym");
         const [totalPages, currentPage] = db.paginate(acronymResults, req.query.page, req.query.limit);
         res.setHeader('Pagination-Count', totalPages)
             .setHeader('Pagination-Page', req.params.page ? req.params.page : 1)

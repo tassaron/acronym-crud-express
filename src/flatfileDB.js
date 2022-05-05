@@ -5,28 +5,29 @@ import { randomUUID } from 'crypto';
 
 class FlatfileDatabaseAdaptor {
     /* Abstracts the flatfile-based database so it can be replaced with a real database later */
-    constructor(dbDir) {
+    constructor(dbDir, resourceName) {
         // The "database" is a directory of JSON files
         this._dbDir = dbDir;
+        this._resourceName = resourceName;
         if (!existsSync(this._dbDir)) {
             mkdirSync(this._dbDir);
         }
 
         // Try to get current data or create blank files if needed
         try {
-            const acronyms = readFileSync(`${this._dbDir}/acronym.json`)
-            this.acronyms = JSON.parse(acronyms);
+            const items = readFileSync(`${this._dbDir}/${resourceName}.json`)
+            this.items = JSON.parse(items);
         } catch(e) {
-            this.acronyms = [];
+            this.items = [];
             // Write file synchronously at first launch or corrupt data
-            writeFileSync(`${this._dbDir}/acronym.json`, JSON.stringify(this.acronyms));
+            writeFileSync(`${this._dbDir}/${resourceName}.json`, JSON.stringify(this.items));
         }
     }
     
     _writeDB() {
         writeFile(
-            `${this._dbDir}/acronym.json`,
-            JSON.stringify(this.acronyms)
+            `${this._dbDir}/${this._resourceName}.json`,
+            JSON.stringify(this.items)
         ).then(
             () => console.log("Wrote to flatfile database."),
             () => console.error("Failed while writing to flatfile database.")
@@ -44,50 +45,50 @@ class FlatfileDatabaseAdaptor {
         return [totalPages, currentPage]
     }
 
-    search(search) {
-        const acronyms = this.acronyms.filter((acronymObj) => acronymObj.acronym.indexOf(search) != -1);
-        return acronyms;
+    search(search, prop) {
+        const items = this.items.filter((itemObj) => itemObj[prop].indexOf(search) != -1);
+        return items;
     }
 
-    _getIndex(acronymID) {
+    _getIndex(itemID) {
         let i=0;
-        for (i; i < this.acronyms.length; i++) {
-            if (this.acronyms[i]._id == acronymID) return i
+        for (i; i < this.items.length; i++) {
+            if (this.items[i]._id == itemID) return i
         }
         return -1
     }
 
-    get(acronymID) {
-        const acronym = this.acronyms.filter((acronymObj) => acronymObj._id == acronymID);
-        if (acronym.length != 1) return null
-        return acronym.pop()
+    get(itemID) {
+        const item = this.items.filter((itemObj) => itemObj._id == itemID);
+        if (item.length != 1) return null
+        return item.pop()
     }
 
-    put(acronymObj) {
-        const acronymID = randomUUID().toString();
-        const newAcronymObj = {"_id": acronymID, ...acronymObj};
-        this.acronyms.push(newAcronymObj);
+    put(itemObj) {
+        const itemID = randomUUID().toString();
+        const newitemObj = {"_id": itemID, ...itemObj};
+        this.items.push(newitemObj);
         this._writeDB();
-        return acronymID;
+        return itemID;
     }
 
-    patch(acronymID, acronymObj) {
-        const acronymIndex = this._getIndex(acronymID);
-        if (acronymIndex < 0) return false
-        this.acronyms[acronymIndex] = { "_id": acronymID, ...acronymObj };
+    patch(itemID, itemObj) {
+        const itemIndex = this._getIndex(itemID);
+        if (itemIndex < 0) return false
+        this.items[itemIndex] = { "_id": itemID, ...itemObj };
         this._writeDB();
         return true
     }
 
-    delete(acronymID) {
-        const acronymIndex = this._getIndex(acronymID);
-        if (acronymIndex < 0) return false
-        this.acronyms.splice(acronymIndex, acronymIndex+1);
+    delete(itemID) {
+        const itemIndex = this._getIndex(itemID);
+        if (itemIndex < 0) return false
+        this.items.splice(itemIndex, itemIndex+1);
         this._writeDB();
         return true
     }
 }
 
-const db = new FlatfileDatabaseAdaptor(`${process.env.MODE}DB`);
+const db = (resourceName) => new FlatfileDatabaseAdaptor(`${process.env.MODE}DB`, resourceName);
 
 export default db;
