@@ -4,13 +4,16 @@
   "description": "simple REST API for defining acronyms",
   "main": "src/app.js",
   "scripts": {
-    "start": "node ./dist/bin/www",
-    "watch": "nodemon",
-    "dev": "npm run clean; npm run compile; npm run start",
+    "start": "MODE=production node ./dist/bin/www",
+    "dev-start": "MODE=development node ./dist/bin/www",
+    "test-start": "MODE=testing node ./dist/bin/www",
+    "dev": "npm run build; npm run dev-start",
+    "build": "npm run clean; npm run compile",
     "compile": "babel ./src --out-dir dist",
     "clean": "rm -r dist",
-    "build": "npm run clean; npm run compile",
-    "test": "bash -c src/bin/test.sh"
+    "test-script": "sleep 1s; bash -c src/bin/test.sh",
+    "test": "rm -r testingDB; (npm run test-script &); npm run test-start",
+    "watch": "nodemon"
   },
   "repository": {
     "type": "git",
@@ -19,7 +22,7 @@
   "keywords": [
     "acronym"
   ],
-  "author": "Brianna Rainey",
+  "author": "Brianna Rainey <tassaron>",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/tassaron/acronym-crud-express/issues"

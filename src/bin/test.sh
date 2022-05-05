@@ -30,11 +30,17 @@ main () {
     echo "GET 127.0.0.1:3000/acronym"
     GET 127.0.0.1:3000/acronym
     newline
-    echo "POST 127.0.0.1:3000/acronym [Add LOL acronym (200)]"
-    POST200
+    echo "GET 127.0.0.1:3000/acronym?search=LOL"
+    GET "127.0.0.1:3000/acronym?search=LOL"
     newline
     echo "POST 127.0.0.1:3000/acronym [Add LOL acronym (400)]"
     POST400
+    newline
+    echo "POST 127.0.0.1:3000/acronym [Add LOL acronym (204)]"
+    POST200
+    newline
+    echo "GET 127.0.0.1:3000/acronym?search=LOL"
+    GET "127.0.0.1:3000/acronym?search=LOL"
     newline
 }
 
