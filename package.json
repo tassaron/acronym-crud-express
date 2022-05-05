@@ -12,7 +12,7 @@
     "compile": "babel ./src --out-dir dist",
     "clean": "rm -r dist",
     "test-script": "sleep 1s; bash -c src/bin/test.sh",
-    "test": "rm -r testingDB; (npm run test-script &); npm run test-start",
+    "test": "rm -r testingDB; npm run build; (npm run test-script &); npm run test-start",
     "watch": "nodemon"
   },
   "repository": {
