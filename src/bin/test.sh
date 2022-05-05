@@ -4,6 +4,9 @@ GET () {
     curl $1
 }
 
+GETHEADERS () {
+    curl -Ii $1
+}
 
 POST200 () {
     curl --header "Content-Type: application/json" -s \
@@ -84,6 +87,9 @@ main () {
     newline
     echo "GET 127.0.0.1:3000/acronym?search=2 [return 3 results]"
     GET "127.0.0.1:3000/acronym?search=2"
+    newline
+    echo "HEAD 127.0.0.1:3000/acronym?search=2&limit=1 [return 1 result, header says 3 pages]"
+    GETHEADERS "127.0.0.1:3000/acronym?search=2&limit=1"
     newline
 }
 
