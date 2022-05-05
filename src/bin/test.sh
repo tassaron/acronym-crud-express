@@ -57,6 +57,12 @@ main () {
     echo "GET 127.0.0.1:3000/acronym?search=LOL"
     GET "127.0.0.1:3000/acronym?search=LOL"
     newline
+    echo "DELETE 127.0.0.1:3000/acronym/$uuid [Delete LOL acronym (200)]"
+    curl -X "DELETE" 127.0.0.1:3000/acronym/$uuid
+    newline
+    echo "GET 127.0.0.1:3000/acronym?search=LOL"
+    GET "127.0.0.1:3000/acronym?search=LOL"
+    newline
 }
 
 

@@ -59,8 +59,12 @@ export const acronymRouter = (appRouter, db, url='/acronym') => {
     
     
     const delete_ = (req, res) => {
-        //const acronymResults = db.get(req.query.search);
-        //res.send(acronymResults);
+        const success = db.delete(req.params.acronymID);
+        if (success) {
+            res.sendStatus(204);
+            return
+        }
+        abort(res, errMsg);
     }
     
     

@@ -65,6 +65,15 @@ class FlatfileDatabaseAdaptor {
         const acronymIndex = this._getIndex(acronymID);
         if (acronymIndex < 0) return false
         this.acronyms[acronymIndex] = { "_id": acronymID, ...acronymObj };
+        this._writeDB();
+        return true
+    }
+
+    delete(acronymID) {
+        const acronymIndex = this._getIndex(acronymID);
+        if (acronymIndex < 0) return false
+        this.acronyms.splice(acronymIndex, acronymIndex+1);
+        this._writeDB();
         return true
     }
 }
