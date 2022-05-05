@@ -9,7 +9,7 @@ POST200 () {
     curl --header "Content-Type: application/json" \
     --request POST \
     --data '{ "acronym": "LOL", "definition": "lots of love" }' \
-    127.0.0.1:3000/acronym
+    127.0.0.1:3000/acronym | jq -r .id
 }
 
 
@@ -18,6 +18,14 @@ POST400 () {
     --request POST \
     --data '{ "acronym": 200, "definition": "this! is! bad data!" }' \
     127.0.0.1:3000/acronym
+}
+
+
+PATCH200 () {
+    curl --header "Content-Type: application/json" \
+    --request PATCH \
+    --data '{ "acronym": "LOL", "definition": "laugh out loud" }' \
+    127.0.0.1:3000/acronym/$1
 }
 
 
@@ -36,8 +44,15 @@ main () {
     echo "POST 127.0.0.1:3000/acronym [Add LOL acronym (400)]"
     POST400
     newline
-    echo "POST 127.0.0.1:3000/acronym [Add LOL acronym (204)]"
-    POST200
+    echo "POST 127.0.0.1:3000/acronym [Add LOL acronym (200)]"
+    uuid=$(POST200)
+    echo $uuid
+    newline
+    echo "GET 127.0.0.1:3000/acronym?search=LOL"
+    GET "127.0.0.1:3000/acronym?search=LOL"
+    newline
+    echo "PATCH 127.0.0.1:3000/acronym/$uuid [Patch LOL acronym (200)]"
+    PATCH200 $uuid
     newline
     echo "GET 127.0.0.1:3000/acronym?search=LOL"
     GET "127.0.0.1:3000/acronym?search=LOL"

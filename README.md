@@ -6,7 +6,7 @@ Uses ES6 modules and a flatfile "database" made of JSON files (with adaptor laye
 # Dependencies
 * Unix system
 * Babel
-* Bash & curl for testing in development
+* Bash, curl, jq for testing in development
 
 ## Development
 * `npm run dev` to clean, compile, and run a dev server one time

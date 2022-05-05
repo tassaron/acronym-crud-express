@@ -39,8 +39,16 @@ class FlatfileDatabaseAdaptor {
         return this.acronyms.filter((acronymObj) => acronymObj.acronym == search);
     }
 
+    _getIndex(acronymID) {
+        let i=0;
+        for (i; i < this.acronyms.length; i++) {
+            if (this.acronyms[i]._id == acronymID) return i
+        }
+        return -1
+    }
+
     get(acronymID) {
-        const acronym = this.acronyms.filter((acronymObj) => acronymObj.acronym == search);
+        const acronym = this.acronyms.filter((acronymObj) => acronymObj._id == acronymID);
         if (acronym.length != 1) return null
         return acronym.pop()
     }
@@ -51,6 +59,13 @@ class FlatfileDatabaseAdaptor {
         this.acronyms.push(newAcronymObj);
         this._writeDB();
         return acronymID;
+    }
+
+    patch(acronymID, acronymObj) {
+        const acronymIndex = this._getIndex(acronymID);
+        if (acronymIndex < 0) return false
+        this.acronyms[acronymIndex] = { "_id": acronymID, ...acronymObj };
+        return true
     }
 }
 

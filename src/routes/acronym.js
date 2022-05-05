@@ -29,7 +29,7 @@ export const acronymRouter = (appRouter, db, url='/acronym') => {
             abort(res, "Missing search term");
             return
         }
-        const acronymResults = db.get(req.query.search);
+        const acronymResults = db.search(req.query.search);
         res.send(acronymResults);
     }
     
@@ -46,12 +46,15 @@ export const acronymRouter = (appRouter, db, url='/acronym') => {
     
     const patch = (req, res) => {
         if (!validateInput(req, res)) return;
-        //db.get()
-        /*const acronymID = db.put({
+        const success = db.patch(req.params.acronymID, {
             "acronym": req.body.acronym,
             "definition": req.body.definition
-        });*/
-        res.sendStatus(204);
+        });
+        if (success) {
+            res.sendStatus(204);
+            return
+        }
+        abort(res, errMsg);
     }
     
     
@@ -64,5 +67,5 @@ export const acronymRouter = (appRouter, db, url='/acronym') => {
     appRouter.get(url, get);
     appRouter.post(url, post);
     appRouter.patch(`${url}/:acronymID`, patch);
-    appRouter.delete_(`${url}/:acronymID`, delete_);
+    appRouter.delete(`${url}/:acronymID`, delete_);
 }
