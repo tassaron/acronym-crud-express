@@ -35,11 +35,18 @@ class FlatfileDatabaseAdaptor {
         );
     }
 
-    search(search, page, limit) {
+    paginate(data, page, limit) {
+        if (!data) return []
         if (!page) page = 1;
         if (!limit) limit = 10;
-        const acronyms = this.acronyms.filter((acronymObj) => acronymObj.acronym == search);
-        return acronyms.slice((limit * page) - limit, limit * page);
+        const currentPage = data.slice((limit * page) - limit, limit * page);
+        const totalPages = Math.ceil(data.length / limit);
+        return [totalPages, currentPage]
+    }
+
+    search(search) {
+        const acronyms = this.acronyms.filter((acronymObj) => acronymObj.acronym.indexOf(search) != -1);
+        return acronyms;
     }
 
     _getIndex(acronymID) {
