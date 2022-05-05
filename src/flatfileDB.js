@@ -23,7 +23,7 @@ class FlatfileDatabaseAdaptor {
         }
     }
     
-    writeDB() {
+    _writeDB() {
         writeFile(
             `${this._dbDir}/acronym.json`,
             JSON.stringify(this.acronyms)
@@ -35,15 +35,21 @@ class FlatfileDatabaseAdaptor {
         );
     }
 
-    get(search) {
+    search(search) {
         return this.acronyms.filter((acronymObj) => acronymObj.acronym == search);
+    }
+
+    get(acronymID) {
+        const acronym = this.acronyms.filter((acronymObj) => acronymObj.acronym == search);
+        if (acronym.length != 1) return null
+        return acronym.pop()
     }
 
     put(acronymObj) {
         const acronymID = randomUUID().toString();
         const newAcronymObj = {"_id": acronymID, ...acronymObj};
         this.acronyms.push(newAcronymObj);
-        this.writeDB();
+        this._writeDB();
         return acronymID;
     }
 }
