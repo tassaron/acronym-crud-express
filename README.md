@@ -11,15 +11,17 @@ Uses ES6 modules and a flatfile "database" made of JSON files (with adaptor laye
 
 ## Dev dependencies
 * Babel
-* **To run tests:**
+* Jest
+* **To run test shell script:**
   * Bash
   * curl
   * jq
 
 ## Development
-* `npm test` to build & start server, then run a few simple tests with curl
 * `npm run dev` to clean, build, and run the server one time
 * `npm run watch` to develop while watching source code for changes
+* `npm test` to run test suite using Jest
+* `npm test-sh` to build & start server, then run a few simple tests with curl
 
 ## Production
 * `npm start` to start the server in production mode

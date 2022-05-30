@@ -12,7 +12,8 @@
     "compile": "babel ./src --out-dir dist",
     "clean": "rm -r dist",
     "test-script": "sleep 1s; bash -c src/bin/test.sh",
-    "test": "rm -r testingDB; npm run build; (npm run test-script &); npm run test-start",
+    "test-sh": "rm -r testingDB; npm run build; (npm run test-script &); npm run test-start",
+    "test": "jest",
     "watch": "nodemon"
   },
   "repository": {
@@ -37,11 +38,22 @@
     "nodemon": "^2.0.16"
   },
   "babel": {
-    "presets": ["@babel/preset-env"]
+    "presets": [
+      "@babel/preset-env"
+    ]
   },
-  "nodemonConfig": { 
+  "nodemonConfig": {
     "exec": "npm run dev",
-    "watch": ["src/*"],
-    "exclude": ["*.sh"]
+    "watch": [
+      "src/*"
+    ],
+    "exclude": [
+      "*.sh"
+    ]
+  },
+  "devDependencies": {
+    "jest": "^28.1.0",
+    "supertest": "^6.2.3",
+    "regenerator-runtime": "^0.13.9"
   }
 }
