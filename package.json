@@ -3,6 +3,9 @@
   "version": "1.0.0-a1",
   "description": "simple REST API for defining acronyms",
   "main": "src/app.js",
+  "engines": {
+    "node": ">= 16.10.0"
+  },
   "scripts": {
     "start": "MODE=production node ./dist/bin/www",
     "dev-start": "MODE=development node ./dist/bin/www",
@@ -12,8 +15,8 @@
     "compile": "babel ./src --out-dir dist",
     "clean": "rm -r dist",
     "test-script": "sleep 1s; bash -c src/bin/test.sh",
-    "test-sh": "rm -r testingDB; npm run build; (npm run test-script &); npm run test-start",
-    "test": "jest",
+    "test-sh": "npm run build; (npm run test-script &); npm run test-start",
+    "test": "MODE=testing jest --watch",
     "watch": "nodemon"
   },
   "repository": {

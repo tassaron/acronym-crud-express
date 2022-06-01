@@ -9,18 +9,22 @@ class FlatfileDatabaseAdaptor {
         // The "database" is a directory of JSON files
         this._dbDir = dbDir;
         this._resourceName = resourceName;
+        this._buildDB();
+    }
+
+    _buildDB() {
         if (!existsSync(this._dbDir)) {
             mkdirSync(this._dbDir);
         }
 
         // Try to get current data or create blank files if needed
         try {
-            const items = readFileSync(`${this._dbDir}/${resourceName}.json`)
+            const items = readFileSync(`${this._dbDir}/${this._resourceName}.json`)
             this.items = JSON.parse(items);
         } catch(e) {
             this.items = [];
             // Write file synchronously at first launch or corrupt data
-            writeFileSync(`${this._dbDir}/${resourceName}.json`, JSON.stringify(this.items));
+            writeFileSync(`${this._dbDir}/${this._resourceName}.json`, JSON.stringify(this.items));
         }
     }
     
