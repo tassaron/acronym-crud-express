@@ -3,7 +3,7 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import db from './flatfileDB';
 import routes from './routes/routes';
-import { rmdirSync, existsSync } from "fs";
+import { rmSync, existsSync } from "fs";
 import { exit } from "process";
 
 if (process.env.MODE === "testing") {
@@ -14,7 +14,7 @@ if (process.env.MODE === "testing") {
         const testingDB = `${process.env.PWD}/testingDB`;
         if (existsSync(testingDB)) {
             console.log("Now deleting testingDB");
-            rmdirSync(testingDB, {recursive: true});
+            rmSync(testingDB, {recursive: true});
         }
     }
 }
