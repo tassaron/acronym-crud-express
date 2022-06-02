@@ -1,7 +1,7 @@
 /* Routes related to the Acronym resource */
 
 const errMsg = "Invalid acronym";
-const abort = (res, message) => res.status(404).send({ message: message });
+const abort = (res, message) => res.status(400).send({ message: message });
 
 
 /** Validate req.body to ensure all fields are strings
@@ -47,7 +47,7 @@ export const acronymRouter = (appRouter, createDB, url='/acronym') => {
             "acronym": req.body.acronym,
             "definition": req.body.definition
         });
-        res.status(200).send({ "id": acronymID });
+        res.status(201).send({ "id": acronymID });
     }
 
 
