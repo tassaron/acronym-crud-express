@@ -18,14 +18,14 @@ const LOLdata = {
 
 // GET TEST #1
 describe("GET /acronym endpoint without any data", () => {
-  it("GET /acronym without ?search returns 404", async () => {
+  it("GET /acronym without ?search returns 400", async () => {
     const response = await request(app).get("/acronym");
-    expect(response.statusCode).toBe(404);
+    expect(response.statusCode).toBe(400);
   });
 
-  it("GET /acronym with ?search= returns 404", async () => {
+  it("GET /acronym with ?search= returns 400", async () => {
     const response = await request(app).get("/acronym?search=");
-    expect(response.statusCode).toBe(404);
+    expect(response.statusCode).toBe(400);
   });
 
   it("GET /acronym with ?search=LOL returns 200", async () => {
@@ -47,11 +47,19 @@ describe("GET /acronym endpoint without any data", () => {
 
 // POST TEST #1
 describe("POST /acronym endpoint with LOL acronym", () => {
-  it("POST /acronym with new LOL acronym", async () => {
+  it("POST /acronym with new LOL acronym returns 201", async () => {
     const response = await request(app)
       .post("/acronym")
       .send(LOLdata);
-    expect(response.statusCode).toBe(200);
+    expect(response.statusCode).toBe(201);
+    wait(100);
+  });
+
+  it("POST /acronym without body returns 400", async () => {
+    const response = await request(app)
+      .post("/acronym").send({});
+    expect(response.statusCode).toBe(400);
+    wait(100);
   });
 });
 
@@ -61,14 +69,14 @@ describe("GET /acronym endpoint with LOL acronym", () => {
   // give json file time to be written by previous test
   wait(1000);
 
-  it("GET /acronym without ?search returns 404", async () => {
+  it("GET /acronym without ?search returns 400", async () => {
     const response = await request(app).get("/acronym");
-    expect(response.statusCode).toBe(404);
+    expect(response.statusCode).toBe(400);
   });
 
-  it("GET /acronym with ?search= returns 404", async () => {
+  it("GET /acronym with ?search= returns 400", async () => {
     const response = await request(app).get("/acronym?search=");
-    expect(response.statusCode).toBe(404);
+    expect(response.statusCode).toBe(400);
   });
 
   it("GET /acronym with ?search=LOL returns 200", async () => {
@@ -85,7 +93,6 @@ describe("GET /acronym endpoint with LOL acronym", () => {
     const response = await request(app).get("/acronym?search=LOL");
     expect(response.headers["pagination-count"]).toBe("1");
   });
-
 });
 
 
@@ -97,8 +104,8 @@ describe("DELETE /acronym/$uuid endpoint", () => {
     const firstResponse = await request(app).delete(`/acronym/${uuid}`);
     expect(firstResponse.statusCode).toBe(204);
     // wait for json file to be written to
-    wait(200);
+    wait(100);
     const secondResponse = await request(app).delete(`/acronym/${uuid}`);
-    expect(secondResponse.statusCode).toBe(404);
+    expect(secondResponse.statusCode).toBe(400);
   });
 });
